@@ -7,7 +7,7 @@ import httpx
 from fastmcp import FastMCP
 from fastmcp.exceptions import ToolError
 
-from calculator_agent.config import get_settings
+from calculator.config import get_settings
 
 mcp = FastMCP("Calculator", instructions="Basic arithmetic on two numbers.")
 

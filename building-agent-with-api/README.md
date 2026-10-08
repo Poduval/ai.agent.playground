@@ -14,13 +14,13 @@ Part of the [AI Agent Playground](../README.md). A small, readable template for 
 
 | Layer | Concept | Where |
 |---|---|---|
-| REST API | Plain service, validation, API-key auth | [calculator_agent/api/](calculator_agent/api/) |
-| MCP | Expose the API as tools / resource / prompt | [calculator_agent/mcp_server/](calculator_agent/mcp_server/) |
-| LLM | One OpenAI-compatible client, many providers | [calculator_agent/llm/](calculator_agent/llm/) |
-| Agent | Tool-calling loop over MCP tools, with memory | [calculator_agent/agents/](calculator_agent/agents/) |
-| Memory | In-process or Redis conversation history | [calculator_agent/memory/](calculator_agent/memory/) |
-| A2A | Agent Card, skills, executor, client, bearer auth | [calculator_agent/a2a/](calculator_agent/a2a/) |
-| Security | API key, bearer middleware, input validation | [calculator_agent/security/](calculator_agent/security/) |
+| REST API | Plain service, validation, API-key auth | [calculator/api/](calculator/api/) |
+| MCP | Expose the API as tools / resource / prompt | [calculator/mcp/](calculator/mcp/) |
+| LLM | One OpenAI-compatible client, many providers | [common/llm/](common/llm/) |
+| Agent | Tool-calling loop over MCP tools, with memory | [calculator/agents/](calculator/agents/) |
+| Memory | In-process or Redis conversation history | [common/memory/](common/memory/) |
+| A2A | Agent Card, skills, executor, client, bearer auth | [calculator/a2a/](calculator/a2a/) |
+| Security | API key, bearer middleware, input validation | [common/security/](common/security/) |
 
 Read [docs/architecture.md](docs/architecture.md) for the request flow and [docs/learning-path.md](docs/learning-path.md) for a suggested reading order.
 
@@ -75,7 +75,8 @@ make lint
 ## Project layout
 
 ```text
-calculator_agent/   application code (one subpackage per layer)
+common/             shared building blocks: config, llm, memory, security, MCP client
+calculator/         the calculator agent: api, mcp, agents, a2a
 tests/              pytest suite
 docs/               architecture and learning path
 deploy/             optional infrastructure config (LiteLLM)

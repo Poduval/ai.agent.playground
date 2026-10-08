@@ -7,8 +7,8 @@ and the security scheme callers must use for the JSON-RPC endpoint.
 from a2a.types import AgentCapabilities, AgentCard, AgentInterface, AgentSkill
 from a2a.types.a2a_pb2 import HTTPAuthSecurityScheme, SecurityRequirement, SecurityScheme, StringList
 
-from calculator_agent import __version__
-from calculator_agent.config import Settings, get_settings
+from calculator import __version__
+from calculator.config import Settings, get_settings
 
 
 def build_agent_card(settings: Settings | None = None) -> AgentCard:

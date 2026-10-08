@@ -1,7 +1,7 @@
 import fakeredis.aioredis
 import pytest
 
-from calculator_agent.memory import InMemoryStore, RedisStore, get_store
+from common.memory import InMemoryStore, RedisStore, get_store
 
 
 @pytest.fixture(params=["memory", "redis"])

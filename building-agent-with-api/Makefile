@@ -5,7 +5,7 @@ install:        ## create .venv and install with dev tools
 test:
 	.venv/bin/pytest
 lint:
-	.venv/bin/ruff check calculator_agent tests
+	.venv/bin/ruff check common calculator tests
 api:            ## terminal 1
 	.venv/bin/calculator-api
 mcp:            ## terminal 2

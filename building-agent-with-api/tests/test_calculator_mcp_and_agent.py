@@ -7,12 +7,12 @@ import httpx
 import pytest
 from fastmcp import Client
 
-from calculator_agent.agents.calculator_agent import CalculatorAgent
-from calculator_agent.agents.mcp_client import McpCalculator
-from calculator_agent.agents.offline import parse_question
-from calculator_agent.api.main import app as api_app
-from calculator_agent.mcp_server import server
-from calculator_agent.memory import InMemoryStore
+from calculator.agents.main import CalculatorAgent
+from calculator.agents.offline import parse_question
+from calculator.api.main import app as api_app
+from calculator.mcp import server
+from common.mcp_client import McpClient
+from common.memory import InMemoryStore
 
 
 @pytest.fixture(autouse=True)
@@ -33,16 +33,16 @@ async def test_mcp_lists_tools_resource_and_prompt():
 
 
 async def test_mcp_tool_calls_the_api():
-    assert await McpCalculator(server.mcp).call("multiply", {"a": 6, "b": 7}) == 42
+    assert await McpClient(server.mcp).call("multiply", {"a": 6, "b": 7}) == 42
 
 
 async def test_mcp_divide_by_zero_surfaces_api_message():
     with pytest.raises(RuntimeError, match="zero"):
-        await McpCalculator(server.mcp).call("divide", {"a": 1, "b": 0})
+        await McpClient(server.mcp).call("divide", {"a": 1, "b": 0})
 
 
 async def test_mcp_tools_convert_to_openai_format():
-    tools = await McpCalculator(server.mcp).openai_tools()
+    tools = await McpClient(server.mcp).openai_tools()
     assert {t["function"]["name"] for t in tools} == {"add", "subtract", "multiply", "divide"}
     assert tools[0]["function"]["parameters"]["type"] == "object"
 
@@ -69,7 +69,7 @@ class FakeLLM:
 
 async def test_agent_uses_tool_and_remembers_conversation():
     llm, memory = FakeLLM(), InMemoryStore()
-    agent = CalculatorAgent(mcp=McpCalculator(server.mcp), memory=memory, llm=llm, model="fake")
+    agent = CalculatorAgent(mcp=McpClient(server.mcp), memory=memory, llm=llm, model="fake")
     assert await agent.run("6 times 7?", session_id="s") == "The answer is 42.0."
     assert await agent.run("again", session_id="s") == "The answer is 42.0."
     # Second run's first LLM call includes the first turn from memory.

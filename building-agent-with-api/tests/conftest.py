@@ -1,6 +1,7 @@
 import pytest
 
-from calculator_agent.config import get_settings
+from calculator.config import get_settings as calculator_settings
+from common.config import get_settings as common_settings
 
 
 @pytest.fixture(autouse=True)
@@ -17,6 +18,8 @@ def test_settings(monkeypatch):
         "NVIDIA_API_KEY": "nv-test",
     }.items():
         monkeypatch.setenv(name, value)
-    get_settings.cache_clear()
+    for settings in (common_settings, calculator_settings):
+        settings.cache_clear()
     yield
-    get_settings.cache_clear()
+    for settings in (common_settings, calculator_settings):
+        settings.cache_clear()

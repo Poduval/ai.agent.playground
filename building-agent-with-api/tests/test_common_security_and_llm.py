@@ -5,9 +5,9 @@ from starlette.responses import PlainTextResponse
 from starlette.routing import Route
 from starlette.testclient import TestClient
 
-from calculator_agent.config import Settings
-from calculator_agent.llm import resolve_llm_config
-from calculator_agent.security import BearerTokenMiddleware
+from common.config import Settings
+from common.llm import resolve_llm_config
+from common.security import BearerTokenMiddleware
 
 
 def test_bearer_middleware():

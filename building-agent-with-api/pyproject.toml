@@ -24,13 +24,13 @@ dependencies = [
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "fakeredis>=2.26", "ruff>=0.6"]
 
 [project.scripts]
-calculator-agent = "calculator_agent.cli:main"
-calculator-api = "calculator_agent.api.main:main"
-calculator-mcp = "calculator_agent.mcp_server.server:main"
-calculator-a2a = "calculator_agent.a2a.server:main"
+calculator-agent = "calculator.cli:main"
+calculator-api = "calculator.api.main:main"
+calculator-mcp = "calculator.mcp.server:main"
+calculator-a2a = "calculator.a2a.server:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["calculator_agent"]
+packages = ["common", "calculator"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from openai import AsyncOpenAI
 
-from calculator_agent.config import Settings, get_settings
+from common.config import Settings, get_settings
 
 # provider -> (base_url, default_model, name of the Settings field holding its key or None)
 PRESETS: dict[str, tuple[str, str, str | None]] = {

@@ -10,21 +10,24 @@
 
 ## Modules
 
+`common/` is shared by any agent; `calculator/` is one agent built on it.
+
 | Module | Responsibility |
 |---|---|
-| `config.py` | One `Settings` class (pydantic-settings): env vars / `.env` |
-| `api/` | `main.py` routes, `operations.py` pure math, `schemas.py` models |
-| `mcp_server/server.py` | FastMCP: 4 tools, `calculator://help` resource, `explain_calculation` prompt |
-| `llm/client.py` | Provider presets → `AsyncOpenAI` client |
-| `agents/mcp_client.py` | List/call MCP tools; converts schemas to OpenAI format |
-| `agents/calculator_agent.py` | Tool-calling loop (max 5 steps) + memory |
-| `agents/offline.py` | Rule-based parser for `--demo` |
-| `memory/store.py` | `MemoryStore` protocol, `InMemoryStore`, `RedisStore` |
-| `a2a/card.py` | Agent Card: skills, modes, bearer security scheme |
-| `a2a/executor.py` | Task lifecycle; JSON → direct MCP call, text → LLM agent |
-| `a2a/server.py` / `client.py` | Starlette app with auth middleware / authenticated client |
-| `security/auth.py` | `require_api_key` dependency, `BearerTokenMiddleware` |
-| `cli.py` | `calculator-agent` command |
+| `common/config.py` | Base `Settings` (pydantic-settings): LLM, memory, A2A token |
+| `common/llm/client.py` | Provider presets → `AsyncOpenAI` client |
+| `common/memory/store.py` | `MemoryStore` protocol, `InMemoryStore`, `RedisStore` |
+| `common/security/auth.py` | `api_key_auth` dependency factory, `BearerTokenMiddleware` |
+| `common/mcp_client.py` | List/call MCP tools; converts schemas to OpenAI format |
+| `calculator/config.py` | `CalculatorSettings`: service URLs and API key |
+| `calculator/api/` | `main.py` routes, `operations.py` pure math, `schemas.py` models |
+| `calculator/mcp/server.py` | FastMCP: 4 tools, `calculator://help` resource, `explain_calculation` prompt |
+| `calculator/agents/main.py` | Tool-calling loop (max 5 steps) + memory |
+| `calculator/agents/offline.py` | Rule-based parser for `--demo` |
+| `calculator/a2a/card.py` | Agent Card: skills, modes, bearer security scheme |
+| `calculator/a2a/executor.py` | Task lifecycle; JSON → direct MCP call, text → LLM agent |
+| `calculator/a2a/server.py` / `client.py` | Starlette app with auth middleware / authenticated client |
+| `calculator/cli.py` | `calculator-agent` command |
 
 ## Ports
 
@@ -44,7 +47,8 @@ API 8000 · MCP 8001 (`/mcp`) · A2A 8002 · Redis 6379 · LiteLLM 4000 · Ollam
 
 ## Extending
 
-- New operation: add to `api/operations.py` and a tool in `mcp_server/server.py`; tools are discovered automatically by the agent.
-- New provider: add a preset in `llm/client.py`.
-- New memory backend: implement the `MemoryStore` protocol.
-- Persistent A2A tasks: replace `InMemoryTaskStore` in `a2a/server.py`.
+- New operation: add to `api/operations.py` and a tool in `mcp/server.py`; tools are discovered automatically by the agent.
+- New agent: add a sibling package next to `calculator/` and reuse `common/` (see CLAUDE.md).
+- New provider: add a preset in `common/llm/client.py`.
+- New memory backend: implement the `MemoryStore` protocol in `common/memory/`.
+- Persistent A2A tasks: replace `InMemoryTaskStore` in `calculator/a2a/server.py`.

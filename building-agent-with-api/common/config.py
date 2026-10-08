@@ -1,4 +1,7 @@
-"""All configuration lives here. Values come from environment variables or `.env`."""
+"""Settings shared by every agent. Values come from environment variables or `.env`.
+
+Each agent extends `Settings` with its own fields (see `calculator/config.py`).
+"""
 
 from functools import lru_cache
 
@@ -8,14 +11,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    # --- Service URLs (where each layer can be reached) ---
-    api_url: str = "http://127.0.0.1:8000"
-    mcp_url: str = "http://127.0.0.1:8001/mcp"
-    a2a_url: str = "http://127.0.0.1:8002"
-
-    # --- Security: shared secrets for local development. CHANGE THEM outside localhost. ---
-    calculator_api_key: str = "dev-api-key"  # REST API expects this in `X-API-Key`
-    a2a_bearer_token: str = "dev-a2a-token"  # A2A agent expects `Authorization: Bearer ...`
+    # --- Security: shared secret for local development. CHANGE IT outside localhost. ---
+    a2a_bearer_token: str = "dev-a2a-token"  # A2A agents expect `Authorization: Bearer ...`
 
     # --- LLM: pick a provider preset, then optionally override model / URL / key ---
     llm_provider: str = "nvidia"  # nvidia | ollama | litellm | openai

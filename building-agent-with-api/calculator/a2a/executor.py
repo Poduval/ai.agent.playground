@@ -15,15 +15,16 @@ from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.types.a2a_pb2 import TaskState
 
-from calculator_agent.agents.calculator_agent import CalculatorAgent
-from calculator_agent.agents.mcp_client import McpCalculator
+from calculator.agents.main import CalculatorAgent
+from calculator.config import get_settings
+from common.mcp_client import McpClient
 
 OPERATIONS = {"add", "subtract", "multiply", "divide"}
 
 
 class CalculatorExecutor(AgentExecutor):
-    def __init__(self, mcp: McpCalculator | None = None, agent: CalculatorAgent | None = None):
-        self.mcp = mcp or McpCalculator()
+    def __init__(self, mcp: McpClient | None = None, agent: CalculatorAgent | None = None):
+        self.mcp = mcp or McpClient(get_settings().mcp_url)
         self._agent = agent  # built lazily so structured requests work without an LLM key
 
     async def _solve(self, text: str, session_id: str) -> str:

@@ -8,7 +8,7 @@ import json
 from collections import defaultdict, deque
 from typing import Protocol
 
-from calculator_agent.config import Settings, get_settings
+from common.config import Settings, get_settings
 
 
 class MemoryStore(Protocol):
@@ -43,7 +43,7 @@ class RedisStore:
 
     @staticmethod
     def _key(session_id: str) -> str:
-        return f"calculator_agent:memory:{session_id}"
+        return f"calculator:memory:{session_id}"
 
     async def history(self, session_id: str) -> list[dict]:
         items = await self._redis.lrange(self._key(session_id), 0, -1)

@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from calculator_agent.api.main import app
+from calculator.api.main import app
 
 client = TestClient(app)
 AUTH = {"X-API-Key": "test-key"}

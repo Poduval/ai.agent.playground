@@ -4,18 +4,19 @@ import argparse
 import asyncio
 import sys
 
-from calculator_agent.agents.calculator_agent import CalculatorAgent
-from calculator_agent.agents.mcp_client import McpCalculator
-from calculator_agent.agents.offline import parse_question
+from calculator.agents.main import CalculatorAgent
+from calculator.agents.offline import parse_question
+from calculator.config import get_settings
+from common.mcp_client import McpClient
 
 
 async def _ask(args: argparse.Namespace) -> str:
     if args.demo:  # no LLM: parse with rules, call the MCP tool directly
         operation, a, b = parse_question(args.question)
-        result = await McpCalculator().call(operation, {"a": a, "b": b})
+        result = await McpClient(get_settings().mcp_url).call(operation, {"a": a, "b": b})
         return f"{a:g} {operation} {b:g} = {result:g}  (demo mode, no LLM)"
     if args.a2a:  # go through the A2A agent over the network
-        from calculator_agent.a2a.client import ask_agent
+        from calculator.a2a.client import ask_agent
 
         return await ask_agent(args.question, context_id=args.session)
     return await CalculatorAgent().run(args.question, session_id=args.session)

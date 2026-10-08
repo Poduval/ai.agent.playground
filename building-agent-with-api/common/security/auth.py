@@ -6,12 +6,11 @@
 """
 
 import hmac
+from collections.abc import Callable
 
-from fastapi import Depends, Header, HTTPException
+from fastapi import Header, HTTPException
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
-
-from calculator_agent.config import Settings, get_settings
 
 
 def _matches(supplied: str | None, expected: str) -> bool:
@@ -19,13 +18,17 @@ def _matches(supplied: str | None, expected: str) -> bool:
     return bool(supplied) and hmac.compare_digest(supplied.encode(), expected.encode())
 
 
-def require_api_key(
-    x_api_key: str | None = Header(default=None),
-    settings: Settings = Depends(get_settings),
-) -> None:
-    """FastAPI dependency: reject requests without the right `X-API-Key`."""
-    if not _matches(x_api_key, settings.calculator_api_key):
-        raise HTTPException(status_code=401, detail="Invalid or missing API key")
+def api_key_auth(expected_key: Callable[[], str]) -> Callable[..., None]:
+    """Build a FastAPI dependency that requires `X-API-Key` to equal `expected_key()`.
+
+    Passing a function (not a string) means the key is read at request time from settings.
+    """
+
+    def dependency(x_api_key: str | None = Header(default=None)) -> None:
+        if not _matches(x_api_key, expected_key()):
+            raise HTTPException(status_code=401, detail="Invalid or missing API key")
+
+    return dependency
 
 
 class BearerTokenMiddleware:

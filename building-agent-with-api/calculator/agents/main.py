@@ -5,9 +5,10 @@ This loop is the heart of "tool calling" - read it top to bottom.
 
 import json
 
-from calculator_agent.agents.mcp_client import McpCalculator
-from calculator_agent.llm import get_llm_client, resolve_llm_config
-from calculator_agent.memory import MemoryStore, get_store
+from calculator.config import get_settings
+from common.llm import get_llm_client, resolve_llm_config
+from common.mcp_client import McpClient
+from common.memory import MemoryStore, get_store
 
 SYSTEM_PROMPT = (
     "You are a precise calculator assistant. Always use the provided tools for arithmetic "
@@ -17,8 +18,8 @@ MAX_STEPS = 5  # safety limit so a confused model cannot loop forever
 
 
 class CalculatorAgent:
-    def __init__(self, mcp: McpCalculator | None = None, memory: MemoryStore | None = None, llm=None, model: str | None = None):
-        self.mcp = mcp or McpCalculator()
+    def __init__(self, mcp: McpClient | None = None, memory: MemoryStore | None = None, llm=None, model: str | None = None):
+        self.mcp = mcp or McpClient(get_settings().mcp_url)
         self.memory = memory or get_store()
         if llm is None:
             config = resolve_llm_config()

@@ -5,7 +5,7 @@ from a2a.client import ClientConfig, create_client
 from a2a.helpers import get_stream_response_text, new_text_message
 from a2a.types import Role, SendMessageRequest
 
-from calculator_agent.config import get_settings
+from calculator.config import get_settings
 
 
 async def ask_agent(text: str, context_id: str | None = None) -> str:

@@ -4,8 +4,6 @@ from typing import Any
 
 from fastmcp import Client
 
-from calculator_agent.config import get_settings
-
 
 def _leaf_errors(error: BaseException) -> list[BaseException]:
     """FastMCP may wrap the real error in an exception group; unwrap it."""
@@ -14,16 +12,16 @@ def _leaf_errors(error: BaseException) -> list[BaseException]:
     return [error]
 
 
-class McpCalculator:
+class McpClient:
     """`target` is a URL (normal use) or a FastMCP server object (in-memory tests)."""
 
-    def __init__(self, target: Any = None):
-        self.target = target or get_settings().mcp_url
+    def __init__(self, target: Any):
+        self.target = target
 
     def _wrap(self, exc: Exception) -> RuntimeError:
         leaves = _leaf_errors(exc)
         if any(type(e).__name__ == "ConnectError" for e in leaves):
-            return RuntimeError(f"Cannot reach the MCP server at {self.target}. Start it with: calculator-mcp")
+            return RuntimeError(f"Cannot reach the MCP server at {self.target}. Is it running?")
         return RuntimeError("; ".join(str(e) for e in leaves))
 
     async def openai_tools(self) -> list[dict]:

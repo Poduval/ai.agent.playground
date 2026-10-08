@@ -8,12 +8,12 @@ from a2a.client import ClientConfig, create_client
 from a2a.helpers import get_stream_response_text, new_text_message
 from a2a.types import Role, SendMessageRequest
 
-from calculator_agent.a2a.card import build_agent_card
-from calculator_agent.a2a.executor import CalculatorExecutor
-from calculator_agent.a2a.server import build_app
-from calculator_agent.agents.mcp_client import McpCalculator
-from calculator_agent.api.main import app as api_app
-from calculator_agent.mcp_server import server
+from calculator.a2a.card import build_agent_card
+from calculator.a2a.executor import CalculatorExecutor
+from calculator.a2a.server import build_app
+from calculator.api.main import app as api_app
+from calculator.mcp import server
+from common.mcp_client import McpClient
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def a2a_app(monkeypatch):
             transport=httpx.ASGITransport(app=api_app), base_url="http://api", headers={"X-API-Key": "test-key"}
         ),
     )
-    return build_app(executor=CalculatorExecutor(mcp=McpCalculator(server.mcp)))
+    return build_app(executor=CalculatorExecutor(mcp=McpClient(server.mcp)))
 
 
 def _http(app, token: str | None):

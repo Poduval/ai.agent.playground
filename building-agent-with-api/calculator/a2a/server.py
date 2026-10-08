@@ -10,10 +10,10 @@ from a2a.server.tasks import InMemoryTaskStore
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 
-from calculator_agent.a2a.card import build_agent_card
-from calculator_agent.a2a.executor import CalculatorExecutor
-from calculator_agent.config import Settings, get_settings
-from calculator_agent.security import BearerTokenMiddleware
+from calculator.a2a.card import build_agent_card
+from calculator.a2a.executor import CalculatorExecutor
+from calculator.config import Settings, get_settings
+from common.security import BearerTokenMiddleware
 
 
 def build_app(settings: Settings | None = None, executor: CalculatorExecutor | None = None) -> Starlette:
