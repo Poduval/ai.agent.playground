@@ -9,6 +9,10 @@ Monorepo of independent learning projects. See [README.md](README.md); add proje
 - `building-agent-with-api/` — ready. Has its own [CLAUDE.md](building-agent-with-api/CLAUDE.md) with commands, module map and gotchas. Run everything from inside that folder (`.venv` lives there).
 - `building-agent-with-rag/` — README-only placeholder.
 
+## Release log
+
+[RELEASE.md](RELEASE.md) lists changes per major commit; add an entry with each one.
+
 ## Shared tooling
 
 - `.claude/rules/` — repo-structure, python, security rules.
