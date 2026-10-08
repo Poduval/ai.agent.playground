@@ -1,0 +1,15 @@
+# Optional infrastructure. The Python services run on your machine (see Makefile).
+services:
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  litellm:
+    profiles: ["litellm"]
+    image: ghcr.io/berriai/litellm:main-stable
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    ports: ["4000:4000"]
+    environment:
+      NVIDIA_NIM_API_KEY: ${NVIDIA_API_KEY:-}
+    volumes:
+      - ./deploy/litellm/config.yaml:/app/config.yaml:ro

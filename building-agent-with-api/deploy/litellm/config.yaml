@@ -1,0 +1,11 @@
+# LiteLLM proxy: one OpenAI-compatible endpoint (http://localhost:4000/v1) in front of many models.
+# Use with LLM_PROVIDER=litellm and LLM_MODEL=<model_name below>.
+model_list:
+  - model_name: local-llm            # served by Ollama on the host
+    litellm_params:
+      model: ollama_chat/llama3.1
+      api_base: http://host.docker.internal:11434
+  - model_name: nvidia-llama
+    litellm_params:
+      model: nvidia_nim/meta/llama-3.3-70b-instruct
+      api_key: os.environ/NVIDIA_NIM_API_KEY
