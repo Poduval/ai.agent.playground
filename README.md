@@ -1,13 +1,13 @@
 # AI Agent Playground
 
-A collection of small, self-contained projects for learning and teaching how to build AI agents. Each project is a complete, runnable template with its own dependencies, tests and docs.
+A playground for learning and teaching how to build AI agents. [services](services/) holds the tools (FastAPI APIs with MCP servers); [agents](agents/) holds the agents that use them. Each is a complete, runnable project with its own dependencies, tests and docs.
 
 | Project | Topics | Status |
 |---|---|---|
-| [building-agent-with-api](building-agent-with-api/) | FastAPI → MCP → LLM tool-calling agent → A2A (agent card, skills), Redis memory, API-key and bearer auth, NVIDIA / Ollama / LiteLLM | Ready |
-| [building-agent-with-rag](building-agent-with-rag/) | Retrieval-augmented generation | Placeholder |
+| [services](services/) | FastAPI services, each with an MCP server for agents (calculator first); API-key auth | Ready |
+| [agents/calculator](agents/calculator/) | Basis: API. MCP tools → LLM tool-calling agent → A2A (agent card, skills), Redis memory, bearer auth, NVIDIA / Ollama / LiteLLM | Ready |
 
-Start with the first project's README. To add another, see [docs/new-project.md](docs/new-project.md).
+Start with the `services` README, then [agents/calculator](agents/calculator/). To add an agent, see [docs/new-agent.md](docs/new-agent.md); to add tools, use the `new-service` skill. Pattern: build a service (API + MCP) → build an agent on it → add more of either.
 
 ## Principles
 

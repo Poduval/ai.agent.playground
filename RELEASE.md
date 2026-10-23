@@ -2,6 +2,14 @@
 
 Changes only, newest first. Add an entry with each major commit (commit hash, date, what changed).
 
+## Unreleased — 2026-10-23
+- Added `services/`: FastAPI services, each with an MCP server for agents. The calculator API and MCP server moved there from `building-agent-with-api/` with their tests (11) and the `api_key_auth` helper.
+- Moved `building-agent-with-api/` to `agents/calculator/` (basis: API). `agents/` now holds all agents; each README starts with its basis (API, RAG, ...). Added `agents/README.md`.
+- Made the agent generic: package `calculator` became `agent`; `MCP_SERVERS`, `AGENT_NAME` and `AGENT_INSTRUCTIONS` replace `MCP_URL` and the hardcoded prompt; `McpClient` takes several servers with prefixed tool names; removed `--demo`; added `--tools` and `--call`. Details in `agents/calculator/RELEASE.md`.
+- Deleted the `building-agent-with-rag/` placeholder.
+- Replaced `docs/new-project.md` and the `new-project` skill with `docs/new-agent.md` and a rewritten `new-agent` skill; added the `new-service` skill; updated the `verify` skill, rules, AGENTS.md, CLAUDE.md and READMEs.
+- Added Anthropic's public skills `mcp-builder`, `skill-creator`, `webapp-testing` under `.claude/skills/`.
+
 ## 8a157c0 — 2026-10-08
 - Added `building-agent-with-api/common/` with the shared config, LLM, memory, security and MCP client code.
 - Renamed package `calculator_agent` to `calculator`; `agents/calculator_agent.py` is now `agents/main.py`; `mcp_server/` is now `mcp/`.
